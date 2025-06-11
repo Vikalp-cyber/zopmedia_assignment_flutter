@@ -1,39 +1,45 @@
-class LoginState {
+import 'package:equatable/equatable.dart';
+
+enum LoginStatus { initial, submitting, success, failure }
+
+class LoginState extends Equatable {
   final String email;
   final String password;
-  final bool isSubmitting;
-  final bool isSuccess;
-  final bool isFailure;
+  final LoginStatus status;
+  final String? errorMessage;
 
-  LoginState({
+  const LoginState({
     required this.email,
     required this.password,
-    required this.isSubmitting,
-    required this.isSuccess,
-    required this.isFailure,
+    required this.status,
+    this.errorMessage,
   });
 
-  factory LoginState.initial() => LoginState(
-        email: '',
-        password: '',
-        isSubmitting: false,
-        isSuccess: false,
-        isFailure: false,
-      );
+  factory LoginState.initial() {
+    return LoginState(
+      email: '',
+      password: '',
+      status: LoginStatus.initial,
+      errorMessage: null,
+    );
+  }
 
   LoginState copyWith({
     String? email,
     String? password,
-    bool? isSubmitting,
-    bool? isSuccess,
-    bool? isFailure,
+    LoginStatus? status,
+    String? errorMessage,
   }) {
     return LoginState(
       email: email ?? this.email,
       password: password ?? this.password,
-      isSubmitting: isSubmitting ?? this.isSubmitting,
-      isSuccess: isSuccess ?? this.isSuccess,
-      isFailure: isFailure ?? this.isFailure,
+      status: status ?? this.status,
+      errorMessage: errorMessage,
     );
   }
+
+  @override
+  List<Object?> get props => [email, password, status, errorMessage];
 }
+
+
